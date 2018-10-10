@@ -5,7 +5,7 @@ from object_detection.core import standard_fields as fields
 from object_detection.utils import ops
 
 
-class NormalizedToImageCoordinatesTest(tf.test.TestCase):
+class NormalizedToImage(tf.test.TestCase):
 
   def test_normalized_to_image_coordinates(self):
     normalized_boxes = tf.placeholder(tf.float32, shape=(None, 1, 4))
@@ -26,7 +26,7 @@ class NormalizedToImageCoordinatesTest(tf.test.TestCase):
     self.assertAllEqual(absolute_boxes, expected_boxes)
 
 
-class MeshgridTest(tf.test.TestCase):
+class MashgridTest(tf.test.TestCase):
 
   def test_meshgrid_numpy_comparison(self):
     x = np.arange(4)
@@ -38,7 +38,7 @@ class MeshgridTest(tf.test.TestCase):
       self.assertAllEqual(xgrid_output, exp_xgrid)
       self.assertAllEqual(ygrid_output, exp_ygrid)
 
-  def test_meshgrid_multidimensional(self):
+  def meshgrid_multidimensional(self):
     np.random.seed(18)
     x = np.random.rand(4, 1, 2).astype(np.float32)
     y = np.random.rand(2, 3).astype(np.float32)
@@ -66,7 +66,7 @@ class MeshgridTest(tf.test.TestCase):
       self.assertEqual(ygrid_output[yind + xind], y[yind])
 
 
-class OpsTestPadToMultiple(tf.test.TestCase):
+class TestPadToMultiple(tf.test.TestCase):
 
   def test_zero_padding(self):
     tensor = tf.constant([[[[0.], [0.]], [[0.], [0.]]]])
@@ -90,7 +90,7 @@ class OpsTestPadToMultiple(tf.test.TestCase):
     self.assertEqual((1, 4, 4, 1), padded_tensor_out.shape)
 
 
-class OpsTestPaddedOneHotEncoding(tf.test.TestCase):
+class TestPaddedOneHotEncoding(tf.test.TestCase):
 
   def test_correct_one_hot_tensor_with_no_pad(self):
     indices = tf.constant([1, 2, 3, 5])
@@ -166,7 +166,7 @@ class OpsTestPaddedOneHotEncoding(tf.test.TestCase):
       ops.padded_one_hot_encoding(indices, depth=0.1, left_pad=2)
 
 
-class OpsDenseToSparseBoxesTest(tf.test.TestCase):
+class DenseToSparseBoxesTest(tf.test.TestCase):
 
   def test_return_all_boxes_when_all_input_boxes_are_valid(self):
     num_classes = 4
@@ -221,7 +221,7 @@ class OpsDenseToSparseBoxesTest(tf.test.TestCase):
     self.assertAllEqual(box_classes, expected_box_classses)
 
 
-class OpsTestIndicesToDenseVector(tf.test.TestCase):
+class TestIndicesToDenseVector(tf.test.TestCase):
 
   def test_indices_to_dense_vector(self):
     size = 10000
@@ -328,7 +328,7 @@ class OpsTestIndicesToDenseVector(tf.test.TestCase):
       self.assertEqual(output.dtype, expected_output.dtype)
 
 
-class GroundtruthFilterTest(tf.test.TestCase):
+class GroundtruthFilter(tf.test.TestCase):
 
   def test_filter_groundtruth(self):
     input_image = tf.placeholder(tf.float32, shape=(None, None, 3))
@@ -517,7 +517,7 @@ class GroundtruthFilterTest(tf.test.TestCase):
           self.assertAllEqual([0], output_tensors[key].shape)
 
 
-class RetainGroundTruthWithPositiveClasses(tf.test.TestCase):
+class RetainGroundTruthWithPositive(tf.test.TestCase):
 
   def test_filter_groundtruth_with_positive_classes(self):
     input_image = tf.placeholder(tf.float32, shape=(None, None, 3))
@@ -585,7 +585,7 @@ class RetainGroundTruthWithPositiveClasses(tf.test.TestCase):
         self.assertAllEqual(expected_tensors[key], output_tensors[key])
 
 
-class ReplaceNaNGroundtruthLabelScoresWithOnes(tf.test.TestCase):
+class ReplaceNaNGroundtruthLabelScores(tf.test.TestCase):
 
   def test_replace_nan_groundtruth_label_scores_with_ones(self):
     label_scores = tf.constant([np.nan, 1.0, np.nan])
@@ -606,7 +606,7 @@ class ReplaceNaNGroundtruthLabelScoresWithOnes(tf.test.TestCase):
       self.assertAllClose(input_label_scores, output_label_scores)
 
 
-class GroundtruthFilterWithCrowdBoxesTest(tf.test.TestCase):
+class GroundtruthFilterWithCrowdBoxes(tf.test.TestCase):
 
   def test_filter_groundtruth_with_crowd_boxes(self):
     input_tensors = {
@@ -643,7 +643,7 @@ class GroundtruthFilterWithCrowdBoxesTest(tf.test.TestCase):
         self.assertAllEqual(expected_tensors[key], output_tensors[key])
 
 
-class GroundtruthFilterWithNanBoxTest(tf.test.TestCase):
+class GroundtruthFilterWithNanBox(tf.test.TestCase):
 
   def test_filter_groundtruth_with_nan_box_coordinates(self):
     input_tensors = {
@@ -680,7 +680,7 @@ class GroundtruthFilterWithNanBoxTest(tf.test.TestCase):
         self.assertAllEqual(expected_tensors[key], output_tensors[key])
 
 
-class OpsTestNormalizeToTarget(tf.test.TestCase):
+class TestNormalizeToTarget(tf.test.TestCase):
 
   def test_create_normalize_to_target(self):
     inputs = tf.random_uniform([5, 10, 12, 3])
@@ -747,7 +747,7 @@ class OpsTestNormalizeToTarget(tf.test.TestCase):
       self.assertAllClose(output, expected_output)
 
 
-class OpsTestPositionSensitiveCropRegions(tf.test.TestCase):
+class TestPositionSensitiveCropRegions(tf.test.TestCase):
 
   def test_position_sensitive(self):
     num_spatial_bins = [3, 2]
@@ -1022,7 +1022,7 @@ class OpsTestPositionSensitiveCropRegions(tf.test.TestCase):
           image, boxes, box_ind, crop_size, num_spatial_bins, global_pool=False)
 
 
-class ReframeBoxMasksToImageMasksTest(tf.test.TestCase):
+class ReframeBoxMasksToImageMasks(tf.test.TestCase):
 
   def testZeroImageOnEmptyMask(self):
     box_masks = tf.constant([[[0, 0],
@@ -1070,7 +1070,7 @@ class ReframeBoxMasksToImageMasksTest(tf.test.TestCase):
       self.assertAllClose(np_image_masks, np_expected_image_masks)
 
 
-class MergeBoxesWithMultipleLabelsTest(tf.test.TestCase):
+class MergeBoxesWithMultipleLabels(tf.test.TestCase):
 
   def testMergeBoxesWithMultipleLabels(self):
     boxes = tf.constant(
